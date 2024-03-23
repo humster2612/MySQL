@@ -1,0 +1,774 @@
+CREATE TABLE Klienci (
+    ID_Klienta INT PRIMARY KEY,
+    Imie VARCHAR(50),
+    Nazwisko VARCHAR(50),
+    Email VARCHAR(100),
+    NumerKontaktowy VARCHAR(20)
+);
+CREATE TABLE Produkty (
+    ID_Produktu INT PRIMARY KEY,
+    NazwaProduktu VARCHAR(100),
+    Cena DECIMAL(10, 2),
+    Kategoria VARCHAR(50)
+);
+CREATE TABLE UlubioneProdukty (
+    ID_UlubionegoProduktu INT PRIMARY KEY,
+    ID_Klienta INT,
+    ID_Produktu INT,
+    FOREIGN KEY (ID_Klienta) REFERENCES Klienci(ID_Klienta),
+    FOREIGN KEY (ID_Produktu) REFERENCES Produkty(ID_Produktu)
+);
+CREATE TABLE Promocje (
+    ID_Promocji INT PRIMARY KEY,
+    NazwaPromocji VARCHAR(100),
+    Opis VARCHAR(255),
+    Rabat DECIMAL(5, 2)
+);
+CREATE TABLE KlientPromocje (
+    ID_Klienta INT,
+    ID_Promocji INT,
+    PRIMARY KEY (ID_Klienta, ID_Promocji),
+    FOREIGN KEY (ID_Klienta) REFERENCES Klienci(ID_Klienta),
+    FOREIGN KEY (ID_Promocji) REFERENCES Promocje(ID_Promocji)
+);
+CREATE TABLE KategorieProduktow (
+    ID_Kategorii INT PRIMARY KEY,
+    NazwaKategorii VARCHAR(50)
+);
+CREATE TABLE ProduktKategorie (
+    ID_Produktu INT,
+    ID_Kategorii INT,
+    PRIMARY KEY (ID_Produktu, ID_Kategorii),
+    FOREIGN KEY (ID_Produktu) REFERENCES Produkty(ID_Produktu),
+    FOREIGN KEY (ID_Kategorii) REFERENCES KategorieProduktow(ID_Kategorii)
+);
+CREATE TABLE Zamowienia (
+    ID_Zamowienia INT PRIMARY KEY,
+    ID_Klienta INT,
+    DataZamowienia DATE,
+    Status VARCHAR(50),
+    FOREIGN KEY (ID_Klienta) REFERENCES Klienci(ID_Klienta)
+);
+CREATE TABLE PozycjeZamowienia (
+    ID_PozycjiZamowienia INT PRIMARY KEY,
+    ID_Zamowienia INT,
+    ID_Produktu INT,
+    Ilosc INT,
+    FOREIGN KEY (ID_Zamowienia) REFERENCES Zamowienia(ID_Zamowienia),
+    FOREIGN KEY (ID_Produktu) REFERENCES Produkty(ID_Produktu)
+);
+CREATE TABLE Dostawcy (
+    ID_Dostawcy INT PRIMARY KEY,
+    NazwaDostawcy VARCHAR(100),
+    Kontakt VARCHAR(50)
+);
+CREATE TABLE StanMagazynowy (
+    ID_Produktu INT,
+    ID_Dostawcy INT,
+    Ilosc INT,
+    FOREIGN KEY (ID_Produktu) REFERENCES Produkty(ID_Produktu),
+    FOREIGN KEY (ID_Dostawcy) REFERENCES Dostawcy(ID_Dostawcy)
+);
+CREATE TABLE Reklamacje (
+    ID_Reklamacji INT PRIMARY KEY,
+    ID_Klienta INT,
+    Opis VARCHAR(255),
+    Status VARCHAR(50),
+    FOREIGN KEY (ID_Klienta) REFERENCES Klienci(ID_Klienta)
+);
+CREATE TABLE AnalizyProduktow (
+    ID_Analizy INT PRIMARY KEY,
+    ID_Produktu INT,
+    Sprzedaz INT,
+    Zysk DECIMAL(10, 2),
+    FOREIGN KEY (ID_Produktu) REFERENCES Produkty(ID_Produktu)
+);
+CREATE TABLE Menadzerowie (
+    ID_Menadzera INT PRIMARY KEY,
+    Imie VARCHAR(50),
+    Nazwisko VARCHAR(50)
+);
+CREATE TABLE ZarzadzanieKategoriami (
+    ID_Menadzera INT,
+    ID_Kategorii INT,
+    PRIMARY KEY (ID_Menadzera, ID_Kategorii),
+    FOREIGN KEY (ID_Menadzera) REFERENCES Menadzerowie(ID_Menadzera),
+    FOREIGN KEY (ID_Kategorii) REFERENCES KategorieProduktow(ID_Kategorii)
+);
+CREATE TABLE AnalizyProduktowMenadzerowie (
+    ID_Analizy INT,
+    ID_Menadzera INT,
+    PRIMARY KEY (ID_Analizy, ID_Menadzera),
+    FOREIGN KEY (ID_Analizy) REFERENCES AnalizyProduktow(ID_Analizy),
+    FOREIGN KEY (ID_Menadzera) REFERENCES Menadzerowie(ID_Menadzera)
+);
+CREATE TABLE ZapytaniaIKontakty (
+    ID_Zapytania INT PRIMARY KEY,
+    ID_Klienta INT,
+    Temat VARCHAR(100),
+    Tresc TEXT,
+    Odpowiedz TEXT,
+    DataZapytania DATE,
+    FOREIGN KEY (ID_Klienta) REFERENCES Klienci(ID_Klienta)
+);
+
+
+
+
+
+клиенты 
+
+-- Inserting another set of fictional data into the Klienci table with different unique phone numbers
+INSERT INTO Klienci (ID_Klienta, Imie, Nazwisko, Email, NumerKontaktowy) VALUES
+(81, 'Eleanor', 'Mitchell', 'eleanor.mitchell@example.com', '111-222-5555'),
+(82, 'Oliver', 'Dawson', 'oliver.dawson@example.com', '444-555-7777'),
+(83, 'Ava', 'Nelson', 'ava.nelson@example.com', '777-888-2222'),
+(84, 'Sebastian', 'Wright', 'sebastian.wright@example.com', '555-444-9999'),
+(85, 'Lily', 'Henderson', 'lily.henderson@example.com', '999-888-6666'),
+(86, 'Carter', 'Reed', 'carter.reed@example.com', '123-456-8888'),
+(87, 'Isabella', 'Ross', 'isabella.ross@example.com', '987-654-1111'),
+(88, 'Mason', 'Gordon', 'mason.gordon@example.com', '111-222-4444'),
+(89, 'Harper', 'Harris', 'harper.harris@example.com', '444-555-6666'),
+(90, 'Ethan', 'Bryant', 'ethan.bryant@example.com', '777-888-3333'),
+(91, 'Aria', 'Mason', 'aria.mason@example.com', '555-444-1111'),
+(92, 'Lucas', 'Fleming', 'lucas.fleming@example.com', '999-888-5555'),
+(93, 'Emma', 'Jordan', 'emma.jordan@example.com', '123-456-2222'),
+(94, 'Noah', 'Richardson', 'noah.richardson@example.com', '987-654-4444'),
+(95, 'Sophia', 'Kennedy', 'sophia.kennedy@example.com', '111-222-7777'),
+(96, 'Liam', 'Lawson', 'liam.lawson@example.com', '444-555-3333'),
+(97, 'Chloe', 'Fisher', 'chloe.fisher@example.com', '777-888-8888'),
+(98, 'Henry', 'Harrison', 'henry.harrison@example.com', '555-444-1111'),
+(99, 'Stella', 'Hudson', 'stella.hudson@example.com', '999-888-7777'),
+(100, 'Caleb', 'Owens', 'caleb.owens@example.com', '123-456-9999');
+-- Inserting another set of fictional data into the Klienci table starting from ID 58 with unique phone numbers
+INSERT INTO Klienci (ID_Klienta, Imie, Nazwisko, Email, NumerKontaktowy) VALUES
+(58, 'Aiden', 'Patterson', 'aiden.patterson@example.com', '111-222-8888'),
+(59, 'Sophie', 'Fletcher', 'sophie.fletcher@example.com', '444-555-1111'),
+(60, 'Lucas', 'Nelson', 'lucas.nelson@example.com', '777-888-9999'),
+(61, 'Aria', 'Gibson', 'aria.gibson@example.com', '555-444-3333'),
+(62, 'Oliver', 'Harrison', 'oliver.harrison@example.com', '999-888-6666'),
+(63, 'Ava', 'Watson', 'ava.watson@example.com', '123-456-7777'),
+(64, 'Ethan', 'Murray', 'ethan.murray@example.com', '987-654-4444'),
+(65, 'Mia', 'Cooper', 'mia.cooper@example.com', '111-222-5555'),
+(66, 'Jackson', 'Fleming', 'jackson.fleming@example.com', '444-555-7777'),
+(67, 'Scarlett', 'Reed', 'scarlett.reed@example.com', '777-888-1111'),
+(68, 'Daniel', 'Gordon', 'daniel.gordon@example.com', '555-444-9999'),
+(69, 'Nora', 'Kennedy', 'nora.kennedy@example.com', '999-888-5555'),
+(70, 'Elijah', 'Jordan', 'elijah.jordan@example.com', '123-456-2222'),
+(71, 'Avery', 'Richardson', 'avery.richardson@example.com', '987-654-3333'),
+(72, 'Grace', 'Lawson', 'grace.lawson@example.com', '111-222-6666'),
+(73, 'Noah', 'Hudson', 'noah.hudson@example.com', '444-555-8888'),
+(74, 'Aubrey', 'Owens', 'aubrey.owens@example.com', '777-888-5555'),
+(75, 'Liam', 'Hart', 'liam.hart@example.com', '555-444-7777'),
+(76, 'Ella', 'Henderson', 'ella.henderson@example.com', '999-888-2222'),
+(77, 'Carter', 'Mason', 'carter.mason@example.com', '123-456-4444');
+-- Inserting another set of fictional data into the Klienci table starting from ID 78 with unique phone numbers
+INSERT INTO Klienci (ID_Klienta, Imie, Nazwisko, Email, NumerKontaktowy) VALUES
+(78, 'Zoe', 'Fisher', 'zoe.fisher@example.com', '111-222-9999'),
+(79, 'Elijah', 'Harrison', 'elijah.harrison@example.com', '444-555-3333'),
+(80, 'Hazel', 'Gibson', 'hazel.gibson@example.com', '777-888-6666'),
+(81, 'Owen', 'Watson', 'owen.watson@example.com', '555-444-7777'),
+(82, 'Ava', 'Murray', 'ava.murray@example.com', '999-888-1111'),
+(83, 'Liam', 'Nelson', 'liam.nelson@example.com', '123-456-2222'),
+(84, 'Sophia', 'Cooper', 'sophia.cooper@example.com', '987-654-4444'),
+(85, 'Jackson', 'Reed', 'jackson.reed@example.com', '111-222-5555'),
+(86, 'Olivia', 'Gordon', 'olivia.gordon@example.com', '444-555-7777'),
+(87, 'Noah', 'Kennedy', 'noah.kennedy@example.com', '777-888-9999'),
+(88, 'Aria', 'Fleming', 'aria.fleming@example.com', '555-444-3333'),
+(89, 'Mason', 'Richardson', 'mason.richardson@example.com', '999-888-6666'),
+(90, 'Ella', 'Lawson', 'ella.lawson@example.com', '123-456-7777'),
+(91, 'Carter', 'Hudson', 'carter.hudson@example.com', '987-654-1111'),
+(92, 'Avery', 'Owens', 'avery.owens@example.com', '111-222-3333'),
+(93, 'Lucas', 'Hart', 'lucas.hart@example.com', '444-555-5555'),
+(94, 'Scarlett', 'Henderson', 'scarlett.henderson@example.com', '777-888-8888'),
+(95, 'Zachary', 'Mason', 'zachary.mason@example.com', '555-444-9999'),
+(96, 'Natalie', 'Fisher', 'natalie.fisher@example.com', '999-888-7777'),
+(97, 'Henry', 'Taylor', 'henry.taylor@example.com', '123-456-6666'),
+(98, 'Stella', 'Porter', 'stella.porter@example.com', '987-654-5555'),
+(99, 'Caleb', 'Wright', 'caleb.wright@example.com', '111-222-8888'),
+(100, 'Sophie', 'Dixon', 'sophie.dixon@example.com', '444-555-3333');
+
+Продукты 
+
+-- Inserting fictional data into the Produkty table for an online store selling clothing
+INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Cena, Kategoria) VALUES
+(1, 'Men\'s Denim Jacket', 79.99, 'Outerwear'),
+(2, 'Women\'s Trench Coat', 129.95, 'Outerwear'),
+(3, 'Casual T-Shirt', 19.99, 'Tops'),
+(4, 'Jeans with Ripped Knees', 49.95, 'Bottoms'),
+(5, 'Sweatshirt with Hood', 39.99, 'Tops'),
+(6, 'Floral Print Dress', 59.99, 'Dresses'),
+(7, 'Leather Handbag', 69.95, 'Accessories'),
+(8, 'Chino Shorts', 29.99, 'Bottoms'),
+(9, 'Sneakers', 89.99, 'Footwear'),
+(10, 'Striped Blouse', 34.95, 'Tops'),
+(11, 'Tailored Trousers', 54.99, 'Bottoms'),
+(12, 'Crew Neck Sweater', 44.95, 'Tops'),
+(13, 'Canvas Sneakers', 59.99, 'Footwear'),
+(14, 'Pleated Skirt', 39.95, 'Bottoms'),
+(15, 'Statement Necklace', 24.99, 'Accessories'),
+(16, 'Leggings', 24.99, 'Bottoms'),
+(17, 'Bomber Jacket', 69.99, 'Outerwear'),
+(18, 'Wide Brim Hat', 29.99, 'Accessories'),
+(19, 'Sunglasses', 19.99, 'Accessories'),
+(20, 'Maxi Dress', 79.99, 'Dresses');
+
+-- Inserting another set of fictional data into the Produkty table for an online store selling clothing
+INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Cena, Kategoria) VALUES
+(21, 'Leather Biker Jacket', 109.99, 'Outerwear'),
+(22, 'Summer Blouse', 29.95, 'Tops'),
+(23, 'Denim Shorts', 34.99, 'Bottoms'),
+(24, 'Printed Scarf', 14.95, 'Accessories'),
+(25, 'Chic Jumpsuit', 79.99, 'Dresses'),
+(26, 'Classic White Shirt', 49.99, 'Tops'),
+(27, 'Knitted Cardigan', 39.99, 'Outerwear'),
+(28, 'High-Waisted Skirt', 44.95, 'Bottoms'),
+(29, 'Ankle Boots', 89.99, 'Footwear'),
+(30, 'Cotton Polo Shirt', 24.95, 'Tops'),
+(31, 'Ruffled Dress', 59.99, 'Dresses'),
+(32, 'Wool Fedora Hat', 39.99, 'Accessories'),
+(33, 'Linen Trousers', 54.95, 'Bottoms'),
+(34, 'Embellished Clutch', 49.99, 'Accessories'),
+(35, 'Printed Leggings', 19.99, 'Bottoms'),
+(36, 'Puffer Jacket', 79.95, 'Outerwear'),
+(37, 'Oxford Shoes', 69.99, 'Footwear'),
+(38, 'Turtleneck Sweater', 34.99, 'Tops'),
+(39, 'Wide-Leg Pants', 44.99, 'Bottoms'),
+(40, 'Patterned Silk Scarf', 29.99, 'Accessories');
+-- Inserting another set of fictional data into the Produkty table for an online store selling clothing
+INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Cena, Kategoria) VALUES
+(41, 'Bomber Jacket with Patches', 89.99, 'Outerwear'),
+(42, 'Floral Maxi Skirt', 54.95, 'Bottoms'),
+(43, 'V-Neck Sweater', 39.99, 'Tops'),
+(44, 'Leather Loafers', 79.99, 'Footwear'),
+(45, 'Printed Wrap Dress', 69.99, 'Dresses'),
+(46, 'Woolen Peacoat', 129.95, 'Outerwear'),
+(47, 'Cargo Pants', 44.99, 'Bottoms'),
+(48, 'Crossbody Satchel', 49.95, 'Accessories'),
+(49, 'Polo Neck Top', 29.99, 'Tops'),
+(50, 'Suede Ankle Boots', 99.99, 'Footwear'),
+(51, 'Cropped Jeans', 39.95, 'Bottoms'),
+(52, 'Velvet Blazer', 74.99, 'Outerwear'),
+(53, 'Chunky Knit Sweater', 59.99, 'Tops'),
+(54, 'Printed Tunic', 34.99, 'Dresses'),
+(55, 'Canvas Sneakers', 39.99, 'Footwear'),
+(56, 'Faux Leather Leggings', 29.99, 'Bottoms'),
+(57, 'Straw Hat', 19.99, 'Accessories'),
+(58, 'Striped Cotton Shirt', 49.99, 'Tops'),
+(59, 'Suede Fringe Bag', 59.95, 'Accessories'),
+(60, 'Ribbed Knit Dress', 44.99, 'Dresses'),
+(61, 'Cotton Shorts', 24.95, 'Bottoms'),
+(62, 'Printed Silk Scarf', 39.99, 'Accessories'),
+(63, 'Anorak Jacket', 79.99, 'Outerwear'),
+(64, 'Lace-Up Boots', 89.95, 'Footwear'),
+(65, 'Printed Blouse', 29.99, 'Tops'),
+(66, 'Cropped Trousers', 34.99, 'Bottoms'),
+(67, 'Classic Trench Coat', 119.95, 'Outerwear'),
+(68, 'Embellished Clutch', 54.99, 'Accessories'),
+(69, 'Pleated Midi Skirt', 49.99, 'Bottoms'),
+(70, 'Chunky Heel Sandals', 69.99, 'Footwear');
+-- Inserting another set of fictional data into the Produkty table for an online store selling clothing
+INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Cena, Kategoria) VALUES
+(71, 'Quilted Vest', 34.99, 'Outerwear'),
+(72, 'Denim Overall Dress', 49.95, 'Dresses'),
+(73, 'Linen Button-Up Shirt', 39.99, 'Tops'),
+(74, 'Strappy Sandals', 59.99, 'Footwear'),
+(75, 'Printed Palazzo Pants', 44.95, 'Bottoms'),
+(76, 'Boho Kimono', 54.99, 'Outerwear'),
+(77, 'Ruffled Sleeve Blouse', 29.99, 'Tops'),
+(78, 'Embroidered Jeans', 69.95, 'Bottoms'),
+(79, 'Platform Sneakers', 79.99, 'Footwear'),
+(80, 'Wrap Midi Skirt', 34.99, 'Bottoms'),
+(81, 'Off-Shoulder Top', 24.99, 'Tops'),
+(82, 'Classic Fedora Hat', 19.99, 'Accessories'),
+(83, 'Ribbed Knit Crop Top', 29.99, 'Tops'),
+(84, 'Tailored Culottes', 49.99, 'Bottoms'),
+(85, 'Boat Neck Sweater', 39.99, 'Tops'),
+(86, 'Espadrille Flats', 44.99, 'Footwear'),
+(87, 'Printed Kimono Dress', 64.95, 'Dresses'),
+(88, 'High-Rise Flare Jeans', 54.99, 'Bottoms'),
+(89, 'Wide Brim Straw Hat', 24.99, 'Accessories'),
+(90, 'Velvet Wrap Top', 59.99, 'Tops');
+-- Inserting another set of fictional data into the Produkty table for an online store selling clothing
+INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Cena, Kategoria) VALUES
+(91, 'Cropped Denim Jacket', 69.99, 'Outerwear'),
+(92, 'Lace Midi Dress', 79.95, 'Dresses'),
+(93, 'Striped Linen Shirt', 34.99, 'Tops'),
+(94, 'Buckle Ankle Boots', 89.99, 'Footwear'),
+(95, 'Printed Wide-Leg Jumpsuit', 59.99, 'Dresses'),
+(96, 'Faux Fur Coat', 99.99, 'Outerwear'),
+(97, 'Ribbed Turtleneck Sweater', 49.99, 'Tops'),
+(98, 'Distressed Skinny Jeans', 44.95, 'Bottoms'),
+(99, 'Studded Platform Sandals', 74.99, 'Footwear'),
+(100, 'Pleated Culottes', 39.99, 'Bottoms'),
+(101, 'Embroidered Blouse', 29.99, 'Tops'),
+(102, 'Leather Backpack', 79.95, 'Accessories');
+
+
+
+улюбленые продукты 
+
+INSERT INTO UlubioneProdukty (ID_UlubionegoProduktu, ID_Klienta, ID_Produktu) VALUES
+(1, 1, 5),
+(2, 2, 12),
+(3, 3, 18),
+(4, 4, 7),
+(5, 5, 25),
+(6, 6, 40),
+(7, 7, 14),
+(8, 8, 31),
+(9, 9, 50),
+(10, 10, 63),
+(11, 11, 23),
+(12, 12, 49),
+(13, 13, 85),
+(14, 14, 97),
+(15, 15, 56),
+(16, 16, 72),
+(17, 17, 82),
+(18, 18, 99),
+(19, 19, 42),
+(20, 20, 91),
+(21, 1, 30),
+(22, 2, 52),
+(23, 3, 75),
+(24, 4, 8),
+(25, 5, 64),
+(26, 6, 93),
+(27, 7, 37),
+(28, 8, 20),
+(29, 9, 58),
+(30, 10, 45),
+(31, 11, 80),
+(32, 12, 68),
+(33, 13, 92),
+(34, 14, 17),
+(35, 15, 86),
+(36, 16, 44),
+(37, 17, 70),
+(38, 18, 77),
+(39, 19, 55),
+(40, 20, 2);
+
+
+
+таблица промоции 
+INSERT INTO Promocje (ID_Promocji, NazwaPromocji, Opis, Rabat) VALUES
+(1, 'Spring Clearance', 'Get ready for spring with discounts on selected items!', 20.00),
+(2, 'Summer Fashion Sale', 'Stay cool in the heat with our summer fashion collection.', 15.50),
+(3, 'Back-to-School Special', 'Gear up for school with special discounts on backpacks and more.', 10.00),
+(4, 'Flash Sale Friday', 'One-day-only flash sale with unbeatable prices!', 25.00),
+(5, 'Cozy Winter Warmth', 'Embrace winter with discounts on cozy sweaters and jackets.', 18.75),
+(6, 'New Year, New Style', 'Start the year with a style upgrade! New year, new you!', 12.50),
+(7, 'Athleisure Week', 'Stay active in style with discounts on sportswear and sneakers.', 15.00),
+(8, 'Holiday Glam', 'Get ready for the holidays with glamorous outfits at discounted prices.', 22.00),
+(9, 'Tech Tuesday', 'Upgrade your gadgets on Tech Tuesday with exclusive tech discounts.', 10.25),
+(10, 'Family and Friends Weekend', 'Celebrate togetherness with special discounts for your loved ones.', 30.00),
+(11, 'Festival Fashion Fiesta', 'Get festival-ready with boho-chic styles and amazing discounts!', 18.50),
+(12, 'Gourmet Delights', 'Enjoy discounts on kitchenware and gourmet items for the culinary enthusiast.', 15.75),
+(13, 'Black Friday Extravaganza', 'Unbeatable deals and doorbusters on Black Friday!', 40.00),
+(14, 'Travel Essentials Sale', 'Prepare for your next adventure with discounts on travel essentials.', 14.00),
+(15, 'Spring Cleaning Clearance', 'Out with the old, in with the new! Massive discounts on clearance items.', 25.50),
+(16, 'Wellness Week', 'Treat yourself to wellness products with special discounts all week.', 20.25),
+(17, 'Midsummer Madness', 'Celebrate the longest day with crazy discounts on selected items!', 18.75),
+(18, 'Autumn Vibes Sale', 'Embrace the fall season with stylish outfits at discounted prices.', 15.00),
+(19, 'Tech & Travel Combo', 'Upgrade your tech gadgets and travel essentials with combined discounts.', 22.50);
+
+
+
+ KlientPromocje
+
+-- Inserting fictional data into the KlientPromocje table for customer promotions
+INSERT INTO KlientPromocje (ID_Klienta, ID_Promocji) VALUES
+(1, 1),
+(1, 5),
+(2, 3),
+(2, 8),
+(3, 12),
+(3, 15),
+(4, 2),
+(4, 7),
+(5, 11),
+(5, 19),
+(6, 4),
+(6, 14),
+(7, 6),
+(7, 10),
+(8, 9),
+(8, 17),
+(9, 13),
+(9, 20),
+(10, 18),
+(10, 21),
+(11, 5),
+(11, 9),
+(12, 14),
+(12, 18),
+(13, 7),
+(13, 12),
+(14, 3),
+(14, 11),
+(15, 17),
+(15, 20),
+(16, 2),
+(16, 15),
+(17, 6),
+(17, 14),
+(18, 10),
+(18, 19),
+(19, 13),
+(19, 21),
+(20, 8),
+(20, 16);
+
+
+
+
+
+
+CREATE TABLE KategorieProduktow (
+    ID_Kategorii INT PRIMARY KEY,
+    NazwaKategorii VARCHAR(50)
+);
+
+INSERT INTO KategorieProduktow (ID_Kategorii, NazwaKategorii) VALUES
+(1, 'T-Shirts'),
+(2, 'Jeans'),
+(3, 'Dresses'),
+(4, 'Footwear'),
+(5, 'Outerwear'),
+(6, 'Accessories'),
+(7, 'Pants'),
+(8, 'Shirts'),
+(9, 'Skirts'),
+(10, 'Suits'),
+(11, 'Sportswear'),
+(12, 'Lingerie'),
+(13, 'Jackets'),
+(14, 'Bags'),
+(15, 'Hats and Scarves'),
+(16, 'Sweaters and Cardigans'),
+(17, 'Sunglasses'),
+(18, 'Athletic Shoes'),
+(19, 'Blazers and Jackets'),
+(20, 'Coats'),
+(21, 'Boots'),
+(22, 'Pyjamas'),
+(23, 'Backpacks'),
+(24, 'Sweatshirts'),
+(25, 'Swimwear'),
+(26, 'Shorts'),
+(27, 'Puffer Jackets'),
+(28, 'Shoes'),
+(29, 'Sandals'),
+(30, 'Sport Suits'),
+(31, 'Rollers and Skateboarding'),
+(32, 'Caps and Baseball Hats'),
+(33, 'Hoodies'),
+(34, 'Children''s Clothing'),
+(35, 'Jumpers'),
+(36, 'Maternity Suits'),
+(37, 'Children''s Shoes'),
+(38, 'Cardigans'),
+(39, 'School Uniforms'),
+(40, 'Bermuda Shorts');
+
+
+
+
+
+INSERT INTO Zamowienia (ID_Zamowienia, ID_Klienta, DataZamowienia, Status) VALUES
+(1, 1, '2023-01-10', 'Shipped'),
+(2, 2, '2023-02-15', 'Processing'),
+(3, 3, '2023-03-20', 'Delivered'),
+(4, 4, '2023-04-05', 'Processing'),
+(5, 5, '2023-05-12', 'Shipped'),
+(6, 6, '2023-06-18', 'Delivered'),
+(7, 7, '2023-07-22', 'Processing'),
+(8, 8, '2023-08-30', 'Shipped'),
+(9, 9, '2023-09-03', 'Delivered'),
+(10, 10, '2023-10-08', 'Processing'),
+(11, 11, '2023-11-15', 'Shipped'),
+(12, 12, '2023-12-21', 'Delivered'),
+(13, 13, '2024-01-02', 'Processing'),
+(14, 14, '2024-02-14', 'Shipped'),
+(15, 15, '2024-03-25', 'Delivered'),
+(16, 16, '2024-04-06', 'Processing'),
+(17, 17, '2024-05-19', 'Shipped'),
+(18, 18, '2024-06-28', 'Processing'),
+(19, 19, '2024-07-15', 'Delivered'),
+(20, 20, '2024-08-09', 'Shipped'),
+(21, 1, '2024-09-12', 'Delivered'),
+(22, 2, '2024-10-20', 'Processing'),
+(23, 3, '2024-11-25', 'Shipped'),
+(24, 4, '2024-12-30', 'Delivered'),
+(25, 5, '2025-01-05', 'Processing'),
+(26, 6, '2025-02-14', 'Shipped'),
+(27, 7, '2025-03-22', 'Delivered'),
+(28, 8, '2025-04-28', 'Processing'),
+(29, 9, '2025-05-11', 'Shipped'),
+(30, 10, '2025-06-18', 'Delivered'),
+(31, 11, '2025-07-02', 'Processing'),
+(32, 12, '2025-08-15', 'Shipped'),
+(33, 13, '2025-09-20', 'Delivered'),
+(34, 14, '2025-10-25', 'Processing'),
+(35, 15, '2025-11-30', 'Shipped'),
+(36, 16, '2025-12-05', 'Processing'),
+(37, 17, '2026-01-10', 'Delivered'),
+(38, 18, '2026-02-14', 'Shipped'),
+(39, 19, '2026-03-20', 'Processing'),
+(40, 20, '2026-04-25', 'Delivered');
+
+
+
+
+
+
+INSERT INTO PozycjeZamowienia (ID_PozycjiZamowienia, ID_Zamowienia, ID_Produktu, Ilosc) VALUES
+(1, 1, 1, 2),
+(2, 1, 5, 1),
+(3, 2, 8, 3),
+(4, 2, 12, 1),
+(5, 3, 15, 2),
+(6, 3, 20, 1),
+(7, 4, 3, 1),
+(8, 4, 6, 2),
+(9, 5, 10, 1),
+(10, 5, 14, 3),
+(11, 6, 18, 2),
+(12, 6, 22, 1),
+(13, 7, 2, 1),
+(14, 7, 7, 2),
+(15, 8, 11, 1),
+(16, 8, 16, 3),
+(17, 9, 19, 2),
+(18, 9, 24, 1),
+(19, 10, 4, 1),
+(20, 10, 9, 2),
+(21, 11, 13, 1),
+(22, 11, 17, 3),
+(23, 12, 21, 2),
+(24, 12, 26, 1),
+(25, 13, 5, 1),
+(26, 13, 10, 2),
+(27, 14, 14, 1),
+(28, 14, 19, 3),
+(29, 15, 23, 2),
+(30, 15, 28, 1),
+(31, 16, 6, 1),
+(32, 16, 11, 2),
+(33, 17, 15, 1),
+(34, 17, 20, 3),
+(35, 18, 24, 2),
+(36, 18, 29, 1),
+(37, 19, 7, 1),
+(38, 19, 12, 2),
+(39, 20, 16, 1),
+(40, 20, 21, 3);
+
+
+
+
+INSERT INTO Dostawcy (ID_Dostawcy, NazwaDostawcy, Kontakt) VALUES
+(1, 'FashionWare Suppliers', 'info@fashionwaresuppliers.com'),
+(2, 'ShoeStyle Distributors', 'contact@shoestyledistributors.com'),
+(3, 'TrendyThreads Wholesale', 'sales@trendythreadswholesale.com'),
+(4, 'FootwearExpress Suppliers', 'support@footwearexpresssuppliers.com'),
+(5, 'Outerwear Oasis', 'orders@outerwearoasis.com'),
+(6, 'Accessories Haven', 'info@accessorieshaven.com'),
+(7, 'Pants Paradise Suppliers', 'sales@pantsparadisesuppliers.com');
+
+
+
+
+INSERT INTO StanMagazynowy (ID_Produktu, ID_Dostawcy, Ilosc) VALUES
+(1, 1, 100),
+(2, 2, 150),
+(3, 3, 80),
+(4, 4, 200),
+(5, 5, 120),
+(6, 6, 90),
+(7, 7, 110),
+(8, 6, 160),
+(9, 7, 70),
+(10, 5, 130),
+(11, 4, 180),
+(12, 3, 100),
+(13, 2, 140),
+(14, 1, 190),
+(15, 1, 80),
+(16, 2, 120),
+(17, 3, 70),
+(18, 4, 110),
+(19, 5, 150),
+(20, 6, 100);
+
+
+
+INSERT INTO Reklamacje (ID_Reklamacji, ID_Klienta, Opis, Status) VALUES
+(1, 1, 'Defective item received', 'Open'),
+(2, 2, 'Wrong size delivered', 'In Progress'),
+(3, 3, 'Item not as described', 'Resolved'),
+(4, 4, 'Missing accessory', 'Open'),
+(5, 5, 'Received wrong color', 'In Progress'),
+(6, 6, 'Damaged during shipping', 'Open'),
+(7, 7, 'Late delivery', 'Resolved'),
+(8, 8, 'Size doesn''t fit', 'In Progress'),
+(9, 9, 'Quality issue with material', 'Open'),
+(10, 10, 'Received duplicate item', 'Resolved'),
+(11, 11, 'Defective zipper', 'Open'),
+(12, 12, 'Item never delivered', 'In Progress'),
+(13, 13, 'Incorrect quantity in order', 'Open'),
+(14, 14, 'Item torn upon arrival', 'Resolved'),
+(15, 15, 'Incorrect item shipped', 'In Progress'),
+(16, 16, 'Wrong measurements', 'Open'),
+(17, 17, 'Item not suitable for intended purpose', 'Resolved'),
+(18, 18, 'Missing buttons', 'In Progress'),
+(19, 19, 'Received wrong brand', 'Open'),
+(20, 20, 'Item doesn''t match website image', 'Resolved'),
+(21, 1, 'Defective stitching', 'Open'),
+(22, 2, 'Item doesn''t match color on website', 'In Progress'),
+(23, 3, 'Late delivery', 'Open'),
+(24, 4, 'Item damaged in transit', 'Resolved'),
+(25, 5, 'Incorrect inseam length', 'In Progress'),
+(26, 6, 'Size discrepancy between shoes', 'Open'),
+(27, 7, 'Missing belt', 'Resolved'),
+(28, 8, 'Item shrunk after first wash', 'In Progress'),
+(29, 9, 'Received wrong style', 'Open'),
+(30, 10, 'Quality issue with fabric', 'Resolved'),
+(31, 11, 'Button fell off upon first use', 'In Progress'),
+(32, 12, 'Late delivery for a gift', 'Open'),
+(33, 13, 'Incorrect product dimensions', 'Resolved'),
+(34, 14, 'Item stained upon arrival', 'In Progress'),
+(35, 15, 'Received wrong pattern', 'Open'),
+(36, 16, 'Seam unraveled', 'Resolved'),
+(37, 17, 'Incorrect shoe size', 'In Progress'),
+(38, 18, 'Late delivery for an event', 'Open'),
+(39, 19, 'Received wrong size jacket', 'Resolved'),
+(40, 20, 'Defective zipper on boots', 'In Progress');
+
+
+
+
+INSERT INTO AnalizyProduktow (ID_Analizy, ID_Produktu, Sprzedaz, Zysk) VALUES
+(1, 1, 25, 75.50),
+(2, 2, 18, 40.75),
+(3, 3, 15, 30.25),
+(4, 4, 22, 60.00),
+(5, 5, 20, 50.50),
+(6, 6, 19, 45.75),
+(7, 7, 16, 35.25),
+(8, 8, 23, 70.00),
+(9, 9, 17, 25.50),
+(10, 10, 21, 55.75),
+(11, 11, 18, 40.50),
+(12, 12, 20, 45.25),
+(13, 13, 14, 20.50),
+(14, 14, 24, 80.75),
+(15, 15, 19, 45.50),
+(16, 16, 21, 65.25),
+(17, 17, 18, 40.50),
+(18, 18, 22, 75.75),
+(19, 19, 15, 20.50),
+(20, 20, 24, 78.25),
+(21, 1, 21, 60.50),
+(22, 2, 18, 45.25),
+(23, 3, 16, 35.50),
+(24, 4, 22, 70.75),
+(25, 5, 14, 30.25),
+(26, 6, 24, 80.50),
+(27, 7, 19, 50.25),
+(28, 8, 21, 60.50),
+(29, 9, 17, 35.75),
+(30, 10, 23, 73.25),
+(31, 11, 16, 50.50),
+(32, 12, 19, 45.75),
+(33, 13, 15, 30.50),
+(34, 14, 25, 80.75),
+(35, 15, 20, 45.25),
+(36, 16, 22, 65.50),
+(37, 17, 17, 35.75),
+(38, 18, 20, 70.50),
+(39, 19, 14, 30.25),
+(40, 20, 22, 78.75);
+
+
+
+
+
+INSERT INTO Menadzerowie (ID_Menadzera, Imie, Nazwisko) VALUES
+(1, 'John', 'Smith'),
+(2, 'Emily', 'Johnson'),
+(3, 'Michael', 'Williams'),
+(4, 'Olivia', 'Jones'),
+(5, 'Daniel', 'Brown'),
+(6, 'Sophia', 'Miller'),
+(7, 'William', 'Davis'),
+(8, 'Emma', 'Martinez'),
+(9, 'Alexander', 'Taylor'),
+(10, 'Ava', 'Anderson');
+
+
+
+INSERT INTO ZarzadzanieKategoriami (ID_Menadzera, ID_Kategorii) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+
+
+
+INSERT INTO AnalizyProduktowMenadzerowie (ID_Analizy, ID_Menadzera) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10),
+(11, 1),
+(12, 2),
+(13, 3),
+(14, 4),
+(15, 5),
+(16, 6),
+(17, 7),
+(18, 8),
+(19, 9),
+(20, 10);
+
+
+INSERT INTO ZapytaniaIKontakty (ID_Zapytania, ID_Klienta, Temat, Tresc, Odpowiedz, DataZapytania) VALUES
+(1, 1, 'Product Inquiry', 'I would like more information about the available shoe models.', NULL, '2023-01-15'),
+(2, 2, 'Order Status', 'Could you please provide an update on the status of my recent order?', NULL, '2023-02-20'),
+(3, 3, 'Sizing Help', 'I need assistance determining the correct size for a specific clothing item.', NULL, '2023-03-10'),
+(4, 4, 'Return Request', 'I would like to initiate a return for a pair of shoes that didn’t fit well.', NULL, '2023-04-05'),
+(5, 5, 'Product Availability', 'Can you confirm the availability of a particular dress in size medium?', NULL, '2023-05-12'),
+(6, 6, 'Shipping Inquiry', 'When can I expect my order to be delivered to the provided address?', NULL, '2023-06-18'),
+(7, 7, 'Discount Inquiry', 'Are there any ongoing promotions or discounts available for online purchases?', NULL, '2023-07-22'),
+(8, 8, 'Technical Issue', 'I encountered an issue while trying to complete my online purchase. Please assist.', NULL, '2023-08-30'),
+(9, 9, 'Feedback', 'I wanted to share my positive experience with your customer service. Great job!', NULL, '2023-09-14'),
+(10, 10, 'Product Recommendation', 'Can you suggest a comfortable and stylish pair of sneakers for daily wear?', NULL, '2023-10-02'),
+(11, 1, 'Payment Issue', 'There seems to be an error with my recent payment. Please investigate.', NULL, '2023-11-08'),
+(12, 2, 'Exchange Request', 'I would like to exchange the color of the blouse I ordered. Is that possible?', NULL, '2023-12-15'),
+(13, 3, 'Order Modification', 'I need to modify the shipping address for my upcoming order. How can I do that?', NULL, '2024-01-03'),
+(14, 4, 'Size Exchange', 'The shoes I received are slightly too small. Can I exchange them for a larger size?', NULL, '2024-02-19'),
+(15, 5, 'Promotional Offer', 'Are there any special offers for loyal customers or upcoming events?', NULL, '2024-03-25'),
+(16, 6, 'Gift Card Inquiry', 'I would like to purchase a gift card. What denominations are available?', NULL, '2024-04-10'),
+(17, 7, 'Product Review', 'I recently purchased a jacket and wanted to share my positive review. Where can I submit it?', NULL, '2024-05-14'),
+(18, 1, 'Product Complaint', 'I received a damaged item. What should I do?', NULL, '2024-09-14'),
+(19, 2, 'International Shipping', 'Do you offer international shipping to Canada? What are the shipping charges?', NULL, '2024-10-02'),
+(20, 3, 'Product Recall', 'I heard about a product recall. Is the item I purchased affected? What should I do?', NULL, '2024-11-08');
+
+
+

@@ -1,0 +1,86 @@
+select *
+from Klienci 
+
+(100 rows affected)
+
+select *
+from Produkty
+
+(100 rows affected)
+
+select *
+from UlubioneProdukty 
+
+(40 rows affected)
+
+select *
+from Promocje 
+
+(21 rows affected)
+
+select *
+from KlientPromocje
+
+(40 rows affected)
+ 
+select *
+from KategorieProduktow 
+
+(40 rows affected)
+
+select *
+from ProduktKategorie  
+
+(20 rows affected)
+
+select *
+from Zamowienia 
+
+(40 rows affected)
+
+select *
+from PozycjeZamowienia 
+
+(40 rows affected)
+ 
+select *
+from Dostawcy 
+
+(7 rows affected)
+
+select *
+from StanMagazynowy 
+
+(20 rows affected)
+
+select *
+from Reklamacje  
+
+(40 rows affected)
+
+select *
+from AnalizyProduktow  
+
+(40 rows affected)
+
+select *
+from Menadzerowie  
+
+(10 rows affected)
+
+select *
+from ZarzadzanieKategoriami   
+
+(10 rows affected)
+
+select *
+from AnalizyProduktowMenadzerowie 
+
+(20 rows affected)
+
+select *
+from ZapytaniaIKontakty 
+
+(20 rows affected)  
+
+Completion time: 2024-01-07T04:51:17.1236707+01:00
